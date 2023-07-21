@@ -4,8 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Expense Tracker</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+  <script src="https://kit.fontawesome.com/eb3537fe7e.js" crossorigin="anonymous"></script>
 </head>
-<body>
+<body class="bg-light">
+  <header>
+    <nav class="navbar-light d-flex" style="padding: 8px 16px; background-color: #ababab;">
+      <a href="/" class="navbar-brand align-middle">家庭記帳本</a>
+      <div class="container d-flex justify-content-end">
+        <a href="/users/logout" class="btn btn-outline-light">登出</a>
+        {{!-- <a href="/users/login" class="btn btn-outline-light">登入</a> --}}
+      </div>
+    </nav>
+  </header>
+
   {{{ body }}}
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
 </body>
 </html>
