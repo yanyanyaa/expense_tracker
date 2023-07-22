@@ -1,0 +1,40 @@
+<div class="container" style="text-align: center;">
+  <div class="category-list">
+    CATEGORY
+
+
+  </div>
+  <div class="total">
+    TOTAL
+    
+
+  </div>
+  <div class="record-list">
+    <ul class="list-group mt-5">
+
+      {{#each records}}
+      <li class="list-group-item m-0">
+        <div class="row align-items-center">
+          <div class="col-auto me-auto d-flex">
+            <div class="icon mx-3">
+              <i class="{{ this.category }}"></i>
+            </div>
+            <h5 class="mx-3">{{ this.name }}</h5>
+            <p class="mx-3">{{ this.date }}</p>
+          </div>
+          <div class="col-auto">
+            <h5 class="mx-3" style="display: inline;">{{ this.amount }}</h5>
+            <a class="btn text-light" href="/records/{{ this._id }}/edit" style="background-color:#82a9c9">修改</a>
+            <form action="/records/{{ this._id }}?_method=DELETE" method="post" style="display: inline;">
+              <button class="btn text-light" type="submit" style="background-color:#c98888">刪除</button>
+            </form>
+          </div>
+        </div>
+      </li>
+      {{/each}}
+
+    </ul>
+    <a class="btn text-light mt-3" href="/records/new" style="background-color:#da9050">新增</a>
+  </div>
+</div>
+
