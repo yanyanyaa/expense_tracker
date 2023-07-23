@@ -5,10 +5,14 @@ const session = require('express-session')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 const PORT = process.env.PORT || 3000
+
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
+
 const routes = require('./routes')
+const usePassport = require('./config/passport')
+usePassport(app)
 require('./config/mongoose')
 
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: 'hbs' }))
@@ -22,6 +26,13 @@ app.use(session({
 
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
+
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.isAuthenticated()
+  res.locals.user = req.user
+  next()
+})
+
 app.use(routes)
 
 app.listen(PORT, () => {
