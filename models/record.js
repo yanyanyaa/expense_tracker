@@ -17,13 +17,13 @@ const recordSchema = new Schema({
   category: {
     type: String,
     required: true
-  }
-  // userId: {
-  //   type: Schema.Types.ObjectId,
-  //   ref: 'User',
-  //   index: true,
-  //   required: true
-  // },
+  },
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    index: true,
+    required: true
+  },
   // categoryId: {
   //   type: Schema.Types.ObjectId,
   //   ref: 'Catrgory',

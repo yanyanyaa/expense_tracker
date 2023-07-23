@@ -5,7 +5,8 @@ const Category = require('../../models/category.js')
 
 // index
 router.get('/', (req, res) => {
-  Record.find()
+  const userId = req.user._id
+  Record.find({ userId })
     .lean()
     .sort({ _id: 'asc' })
     .then(records => {
@@ -21,7 +22,8 @@ router.get('/', (req, res) => {
 // sort
 router.get('/sort/:sortBy', (req, res) => {
   const name_en = req.params.sortBy
-  return Category.find({ name_en })
+  const userId = req.user._id
+  return Category.find({ name_en, userId })
     .lean()
     .then(category => {
       const name = category[0].icon

@@ -13,16 +13,18 @@ router.get('/new', (req, res) => {
 
 // data: new
 router.post('/', (req, res) => {
+  const userId = req.user._id
   const { name, date, category, amount } = req.body
-  return Record.create({ name, date, category, amount })
+  return Record.create({ userId, name, date, category, amount })
     .then(() => res.redirect('/'))
     .catch(err => console.log(err))
 })
 
 // edit
 router.get('/:id/edit', (req, res) => {
+  const userId = req.user._id
   const _id = req.params.id
-  return Record.findById(_id)
+  return Record.findOne({ _id, userId })
     .lean()
     .then(record => {
       return Category.find()
@@ -35,9 +37,10 @@ router.get('/:id/edit', (req, res) => {
 
 // data: edit
 router.put('/:id', (req, res) => {
+  const userId = req.user._id
   const _id = req.params.id
   const { name, date, amount, category } = req.body
-  return Record.findById(_id)
+  return Record.findOne({ _id, userId })
     .then(record => {
       record.name = name
       record.date = date
@@ -51,8 +54,9 @@ router.put('/:id', (req, res) => {
 
 // data: delete
 router.delete('/:id', (req, res) => {
+  const userId = req.user._id
   const _id = req.params.id
-  return Record.findByIdAndDelete(_id)
+  return Record.findByIdAndDelete({ _id, userId })
     .then(() => res.redirect('/'))
     .catch(err => console.log(err))
 })
