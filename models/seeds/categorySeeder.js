@@ -10,6 +10,7 @@ db.once('open', () => {
   categoryList.map(category => {
     const { name, name_en, icon } = category
     Category.create({
+      id,
       name,
       name_en,
       icon
