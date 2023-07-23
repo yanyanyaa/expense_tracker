@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
   const userId = req.user._id
   Record.find({ userId })
     .lean()
-    .sort({ _id: 'asc' })
+    .sort({ date: 'asc' })
     .then(records => {
       let totalAmount = 0
       records.map((record) => {
@@ -23,13 +23,13 @@ router.get('/', (req, res) => {
 router.get('/sort/:sortBy', (req, res) => {
   const name_en = req.params.sortBy
   const userId = req.user._id
-  return Category.find({ name_en, userId })
+  return Category.find({ name_en })
     .lean()
     .then(category => {
-      const name = category[0].icon
-      return Record.find({ category: name })
+      const icon = category[0].icon
+      return Record.find({ category: icon, userId })
         .lean()
-        .sort({ _id: 'asc' })
+        .sort({ date: 'asc' })
         .then(records => {
           console.log('records: ', records)
           res.render('index', { records })
