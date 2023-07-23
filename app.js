@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 const PORT = process.env.PORT || 3000
 const Record = require('./models/record.js')
-const Catrgory = require('./models/category.js')
+const Category = require('./models/category.js')
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
@@ -24,13 +24,36 @@ app.get('/', (req, res) => {
   Record.find()
     .lean()
     .sort({ _id: 'asc' })
-    .then(records => res.render('index', { records }))
+    .then(records => {
+      let totalAmount = 0
+      records.map((record) => {
+        totalAmount += record.amount
+      })
+      res.render('index', { records, totalAmount })})
     .catch(err => console.log('err'))
+})
+
+// sort
+app.get('/sort/:sortBy', (req, res) => {
+  const name_en = req.params.sortBy
+  return Category.find({ name_en })
+    .lean()
+    .then(category => {
+      const name = category[0].icon
+      return Record.find({ category: name })
+        .lean()
+        .sort({ _id: 'asc' })
+        .then(records => {
+          console.log('records: ', records)
+          res.render('index', { records })})
+        .catch(err => console.log(err))
+    })
+    .catch(err => console.log(err))
 })
 
 // new
 app.get('/records/new', (req, res) => {
-  Catrgory.find()
+  Category.find()
     .lean()
     .sort({ _id: 'asc' })
     .then(categories => res.render('new', { categories }))
@@ -38,7 +61,6 @@ app.get('/records/new', (req, res) => {
 
 // data: new
 app.post('/records', (req, res) => {
-  console.log(req.body)
   const { name, date, category, amount } = req.body
   return Record.create({ name, date, category, amount })
     .then(() => res.redirect('/'))
@@ -51,10 +73,10 @@ app.get('/records/:id/edit', (req, res) => {
   return Record.findById(_id)
     .lean()
     .then(record => {
-      return Catrgory.find()
+      return Category.find()
         .lean()
         .sort({ _id: 'asc' })
-        .then(categories => 
+        .then(categories =>
           res.render('edit', { record, categories }))
     })
 })
@@ -75,9 +97,13 @@ app.put('/records/:id', (req, res) => {
     .catch(err => console.log(err))
 })
 
-
 // data: delete
-
+app.delete('/records/:id', (req, res) => {
+  const _id = req.params.id
+  return Record.findByIdAndDelete(_id)
+    .then(() => res.redirect('/'))
+    .catch(err => console.log(err))
+})
 
 app.listen(PORT, () => {
   console.log(`Express is running on http://localhost:${PORT}`)
