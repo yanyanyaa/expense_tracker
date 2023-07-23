@@ -11,8 +11,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const routes = require('./routes')
-const usePassport = require('./config/passport')
-usePassport(app)
+const usePassport = require('./config/passport.js')
 require('./config/mongoose')
 
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: 'hbs' }))
@@ -26,6 +25,8 @@ app.use(session({
 
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
+
+usePassport(app)
 
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.isAuthenticated()
