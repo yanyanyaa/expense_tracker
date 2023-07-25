@@ -12,5 +12,6 @@ router.use('/records', authenticator, records)
 router.use('/users', users)
 router.use('/', authenticator, home)
 
+
 // 匯出路由器
 module.exports = router

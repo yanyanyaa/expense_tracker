@@ -32,6 +32,7 @@ router.get('/:id/edit', (req, res) => {
   return Record.findOne({ _id, userId })
     .lean()
     .then(record => {
+      record.date = record.date.toISOString().split('T')[0]
       return Category.find()
         .lean()
         .sort({ _id: 'asc' })
@@ -45,16 +46,23 @@ router.put('/:id', (req, res) => {
   const userId = req.user._id
   const _id = req.params.id
   const { name, date, amount, category } = req.body
-  return Record.findOne({ _id, userId })
-    .then(record => {
-      record.name = name
-      record.date = date
-      record.amount = amount
-      record.category = category
-      return record.save()
+  Category.findOne({ name: category })
+    .lean()
+    .then((recordCategory) => {
+      categoryId =recordCategory._id
+      return Record.findOne({ _id, userId })
+      .then(record => {
+        record.name = name
+        record.date = date
+        record.amount = amount
+        record.category = category
+        record.categoryId = categoryId
+        return record.save()
     })
     .then(() => res.redirect('/'))
     .catch(err => console.log(err))
+    })
+  
 })
 
 // data: delete

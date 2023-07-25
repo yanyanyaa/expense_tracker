@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const exphbs = require('express-handlebars')
+const handlebarsHelper = require('./helpers/handlebars_helper.js')
 const session = require('express-session')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
@@ -15,7 +16,7 @@ const routes = require('./routes')
 const usePassport = require('./config/passport.js')
 require('./config/mongoose')
 
-app.engine('hbs', exphbs({ defaultLayout: 'main', extname: 'hbs' }))
+app.engine('hbs', exphbs({ defaultLayout: 'main', extname: 'hbs', helpers: handlebarsHelper }))
 app.set('view engine', 'hbs')
 
 app.use(session({

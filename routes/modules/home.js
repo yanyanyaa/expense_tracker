@@ -14,6 +14,7 @@ router.get('/', (req, res) => {
       let totalAmount = 0
       records.map((record) => {
         totalAmount += record.amount
+        record.date = record.date.toISOString().split('T')[0]
       })
       return res.render('index', { records, totalAmount })
     })
@@ -36,6 +37,7 @@ router.get('/sort/:sortBy', (req, res) => {
         let totalAmount = 0
         records.map((record) => {
           totalAmount += record.amount
+          record.date = record.date.toISOString().split('T')[0]
         })
         return res.render('index', { records, totalAmount })
       })
